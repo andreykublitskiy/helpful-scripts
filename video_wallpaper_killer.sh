@@ -1,22 +1,18 @@
 #!/bin/bash
-process=$(pgrep WallpaperVideoExtension)
 
-if [[ -n "$process" ]]; then
+terminate_process() {
+  local process_name=$1
+  local process_id=$(pgrep "$process_name")
 
-# Force quit the process
-kill -9 "$process"
-echo "WallpaperVideoExtension process terminated."
-else
-echo "WallpaperVideoExtension process not found."
-fi
+  if [[ -n "$process_id" ]]; then
+    # Force quit the process
+    kill -9 "$process_id"
+    echo "$process_name process terminated."
+  else
+    echo "$process_name process not found."
+  fi
+}
 
-process2=$(pgrep WallpaperImageExtension)
-
-if [[ -n "$process2" ]]; then
-
-# Force quit the process2
-kill -9 "$process2"
-echo "WallpaperImageExtension process terminated."
-else
-echo "WallpaperImageExtension process not found."
-fi
+# Terminate both processes
+terminate_process "WallpaperVideoExtension"
+terminate_process "WallpaperImageExtension"
